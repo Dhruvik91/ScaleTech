@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.heading{
+    background-color: rgb(207, 207, 207);
+    margin-right: -10px;
+    padding:35px;
+}
+.wrapper{
+  background-color: #fff;
+  width: 930px;
+  padding-right: 10px;
+  margin: 25px auto 0;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+}
+.wrapper,h1,span{
+padding-left:px;
+}
+span{
+    color: rgba(37,173,208,1);
+}
+.logo {
+    display: inline;
+    text-align: center;
+    margin-right:10px;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    display: inline;
+    margin-bottom: 5px;
+}
+.lastName{
+margin-left:35px;
+}
+input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+input[type="submit"] {
+    background-color: #286DEC;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;
+}
+.input-group{
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding: 5px 0;
+}
+.input-group input{
+  width: 230px;
+}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1 class="heading"><span>SCALE</span>TECH</h1>
+    <div class="container">
+        <div class="logo">
+           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7H0u13wFrskVIje5pLMN3kCExmMAQzYOKaQwMYiHNT03LUJIiaoCkTBPqjwRpund-0hU&usqp=CAU" alt="scaletech logo" height="400px" width="400px">
+        </div>
+        <div class="details">
+            <form action="demo.js" method="post" onsubmit="return validateForm()">
+                <h1>Sign Up</h1>
+                <p>Have already account?<a href="#">Login</a></p>
+                <div class="input-group">
+                    <div class="input-box">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="LastName">Last Name</label>
+                        <input type="text" id="lastName" name="LastName" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email Address" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="password" placeholder="Confirm Your Password" required>
+                <input type="submit" value="Sign Up">
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    const password=document.getElementById('password').value;
+    const confirmPassword=document.getElementById('confirmPassword').value;
+    function validateForm(){
+        if(password!==confirmPassword){
+            alert("Please Enter the same password");
+            focus('password');
+            return false;
+        }
+            return true;
+        }
+</script>
+</body>
+</html>
