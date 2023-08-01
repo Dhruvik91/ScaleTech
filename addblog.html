@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup Page</title>
+    <title>Add Blogs</title>
+    <link rel="icon" type="image/x-icon" href="Symbol.jpeg">
+    <link rel="stylesheet" href="stylesforblog.css">
     <style>
     body {
     font-family: Arial, sans-serif;
@@ -52,7 +54,7 @@ input {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-input[type="submit"] {
+input[type="button"] {
     background-color: #286DEC;
     color: #fff;
     cursor: pointer;
@@ -90,7 +92,11 @@ display: none;
 }
     </style>
 </head>
+
+
 <body>
+    <script src="/script.js"></script>
+
     <div class="wrapper">
         <h1 class="heading"><span>SCALE</span>TECH</h1>
     <div class="container">
@@ -111,11 +117,12 @@ display: none;
                 <input type="text" id="Tags" name="Tags" placeholder="Add Tags" required>
                 <label for="Content">Content</label>
                 <input type="text" id="Content" name="Content" placeholder="Add Content" required>
-                <input type="submit" value="Post">
+                <input type="button" onclick="createBlog()" value="Post">
             </form>
         </div>
     </div>
 </div>
+
 </div>
 <script>
 function displayAddBlogsDetails(){

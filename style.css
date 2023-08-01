@@ -1,7 +1,9 @@
 * {
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: Arial, sans-serif;
 }
 
 /* Add a black background color to the top navigation */
@@ -50,7 +52,7 @@
     font-size: 30px;
     font-family: 'Times New Roman', Times, serif;
     animation: upwards 2s 1s top;
-    animation: fadeIn 2.5s;
+    animation: fadeIn 1.5s;
 }
 
 .container p {
@@ -58,21 +60,22 @@
     padding: 30px;
     font-family: 'Times New Roman', Times, serif;
     font-size: 30px;
-    animation: fadeIn 3.5s;
+    animation: fadeIn 2.5s;
 }
 
-@keyframes fadeIn {
-
-    from {
-
-        
-        transform: translateY(100%);
-
-
-    }
-
-    to {
-       
-        transform: translateY(0);
-    }
-}
+/* Blog list styles */
+#blogList {
+    max-width: 500px;
+  }
+  
+  #blogList div {
+    margin-bottom: 30px;
+  }
+  
+  #blogList h2 {
+    margin-bottom: 5px;
+  }
+  
+  #blogList hr {
+    border: 1px solid #ddd;
+  }
