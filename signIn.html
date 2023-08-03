@@ -82,7 +82,7 @@ input[type="submit"] {
            <img src="ScaleTech.png" alt="scaletech logo" height="400px" width="400px">
         </div>
         <div class="details">
-            <form action=" " method=" " onsubmit=" ">
+            <form action="#" method="POST" >
                 <h1>Sign In</h1>
                 
                 <label for="email">Email</label>
@@ -98,18 +98,5 @@ input[type="submit"] {
         </div>
     </div>
 </div>
-
-<script>
-    const password=document.getElementById('password').value;
-    const confirmPassword=document.getElementById('confirmPassword').value;
-    function validateForm(){
-        if(password!==confirmPassword){
-            alert("Please Enter the same password");
-            focus('password');
-            return false;
-        }
-            return true;
-        }
-</script>
 </body>
 </html>
