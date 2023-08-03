@@ -3,134 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign-In</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-
-<style>
-        
-header div{
-    background-color: #D9D9D9;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 1rem;
+    <title>SignIn Page</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-header .logo{
-    font-size: 2rem;
-    color: #000000;
-    text-transform: uppercase;
+.heading{
+    background-color: rgb(207, 207, 207);
+    margin-right: -10px;
+    padding:35px;
 }
 
-header .logo span{
-    color: #25ADD0;
+.wrapper{
+  background-color: #fff;
+  width: 930px;
+  padding-right: 10px;
+  margin: 25px auto 0;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
 }
 
-.signin .row{
-    gap: 1.5rem;
-    align-items: center;
+.details{
+    margin-right: 30px;
 }
 
-.signin .row .image{
-    flex: 1 1 40rem;
+span{
+    color: rgba(37,173,208,1);
 }
 
-.signin .row .image img{
-    width: 45%;
-    align-items: center;
-    margin-left: 15rem;
+.logo {
+    display: inline;
+    text-align: center;
+    margin-right:10px;
+    padding-right: 10rem;
+    width: 50%;
 }
 
-.signin .row form{
-    flex: 1 1 40rem;
-    padding: 2rem;
-    border-radius: .5rem;
-    margin-right: 10rem;
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
 
-.signin .row form .inputbox{
-    padding: .5rem;
+form {
+    display: flex;
+    flex-direction: column;
 }
 
-.signin .row form .inputbox input{
-    width: 70%;
-    padding: .5rem;
-    border: .1rem solid rgba(0, 0, 0,.1);
-    font-size: 1.1rem;
-    color: #333;
-    text-transform: none;
-    border-radius: .2rem;
+label {
+    display: inline;
+    margin-bottom: 10px;
 }
 
-.signin .row form .inputbox input:hover{
-    border: solid #000000;
+input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
 }
-
 input[type="submit"] {
-    background-color: #25ADD0;
+    background-color: #286DEC;
     color: #fff;
     cursor: pointer;
     width: 150px;
-    margin-left: 2%;
-    border-radius: .2rem;
-    border: .2rem solid rgba(0, 0, 0,.1);
 }
-
-input[type="submit"]:hover{
-    background-color: #333;
-}
-
-.Sign{
-    padding: .5rem;
-}
-
 </style>
 </head>
 
 <body>
-    
-    <header>
-        <div>
-            <p href="#" class="logo"><span>Scale</span>Tech</p>
+    <div class="wrapper">
+        <h1 class="heading"><span>SCALE</span>TECH</h1>
+    <div class="container">
+        <div class="logo">
+           <img src="ScaleTech.png" alt="scaletech logo" height="400px" width="400px">
         </div>
-    </header>
+        <div class="details">
+            <form action=" " method=" " onsubmit=" ">
+                <h1>Sign In</h1>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email Address" required>
 
-<section class="signin">
-    <div class="row">
-        <div class="image">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7H0u13wFrskVIje5pLMN3kCExmMAQzYOKaQwMYiHNT03LUJIiaoCkTBPqjwRpund-0hU&usqp=CAU" alt="ScaleTech">
-        </div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
 
-        <form name="myform" method="post" action="#" onsubmit="return validateform();">
-        <div>
-            <h2>Sign-In</h2>
+                <input type="submit" value="Sign In">
+                <p>Don't Have account?<a href="#">Create Account</a></p>
+
+            </form>
         </div>
-        <div class="inputbox">
-            <input type="email" placeholder="Enter Your Email">
-        </div>
-        <div class="inputbox">
-            <input type="password" placeholder="Enter Your password">
-        </div>
-        <div class="Sign">
-            <input type="submit" value="Sign In" class="submit">
-                <p>Don't Have account? <a href="#">Create Account</a></p>
-        </div>
-        </form>
     </div>
-</section>
+</div>
 
 <script>
-    function validateform()  
-{  
-var x=document.myform.email.value;  
-var atposition=x.indexOf("@");  
-var dotposition=x.lastIndexOf(".");  
-
-if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
-  alert("Please enter a valid e-mail address \n atpostion:"+atposition+"\n dotposition:"+dotposition);  
-  return false;  
-  } 
-}
+    const password=document.getElementById('password').value;
+    const confirmPassword=document.getElementById('confirmPassword').value;
+    function validateForm(){
+        if(password!==confirmPassword){
+            alert("Please Enter the same password");
+            focus('password');
+            return false;
+        }
+            return true;
+        }
 </script>
-
 </body>
 </html>
