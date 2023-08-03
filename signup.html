@@ -108,16 +108,16 @@ input[type="submit"] {
 </div>
 </div>
 <script>
-    const password=document.getElementById('password').value;
-    const confirmPassword=document.getElementById('confirmPassword').value;
+    const password=document.getElementById('password');
+    const confirmPassword=document.getElementById('confirmPassword');
     function validateForm(){
-        if(password!==confirmPassword){
+        if(password.value !== confirmPassword.value){
             alert("Please Enter the same password");
             focus('password');
             return false;
         }
-            return true;
-        }
+        return true;
+    }
 </script>
 </body>
 </html>
