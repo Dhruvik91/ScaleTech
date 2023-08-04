@@ -1,5 +1,5 @@
 //localStorage.clear();
-console.log("hello");
+
 // Function to create a blog
 function createBlog() {
     const title = document.getElementById("Title").value;
