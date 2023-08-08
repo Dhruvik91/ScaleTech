@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup demo</title>
+</head>
+<body>
+    <!-- take the values with help of form or something with onsubmit="sendData()"-->
+    <script>
+        sendData();  // just for demo, otherwise we should call it on submit of a form
+        async function sendData(){
+            // do all the valdation and anything ...
+            // and make a object like below
+            let obj = {
+                firstName: "Divyanshu",
+                lastName: "Motivaras",
+                email: "divyanshu1593@gmail.com",
+                password: "password",
+                userName: "divyanshu1593",
+            };
+
+            // using fetch api
+            let res = await fetch(`http://localhost:80/signUp`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+            })
+            
+            res = await res.text();
+            console.log(res);
+            /*
+            we can get following JSONs
+
+            {isSuccess: true, errorMessage: ''}  means data is added to database succesfully
+
+            {isSuccess: false, errorMessage: "..."} means some error occured, there will be diffrent error messages like following:
+            errorMessage exapmles :
+            "The Method has to be POST"   (when method is not post)
+            "Some of the fields were missing in post request"   (when all five fields are not given)
+            "Some SQL error occured"
+            "username or email already exists"
+            */
+        }
+    </script>
+</body>
+</html>
