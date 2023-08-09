@@ -163,11 +163,10 @@ async function checkSignInInfo(userName, email, password, signIn, response){
                 response.end();
             }
             else{
-                // making hash of password
-                let passwordHash = await bcrypt.hash(password, 10);
-                console.log(passwordHash);
 
-                if (result.rows[0].password == passwordHash){
+                let doesPasswordMatch = await bcrypt.compare(password, result.rows[0].password);
+
+                if (doesPasswordMatch){
                     signIn.isSuccess = true;
                     signIn.errorMessage = "";
 
