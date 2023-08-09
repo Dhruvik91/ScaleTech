@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup demo</title>
+</head>
+<body>
+    <!-- take the values with help of form or something with onsubmit="sendData()"-->
+    <script>
+        sendData();  // just for demo, otherwise we should call it on submit of a form
+        async function sendData(){
+            // do all the validation and anything ...
+            // and make a object like below
+            let obj = {
+                userName: 'divyanshu1593',
+                //email: 'divyanshu1593',  not adding this because userName is added
+                password: 'password',
+            };
+
+            // using fetch api
+            let res = await fetch(`http://localhost:80/signIn`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+            })
+            
+            res = await res.text();
+            console.log(res);
+            /*
+            we can get following JSONs
+
+            
+            */
+        }
+    </script>
+</body>
+</html>

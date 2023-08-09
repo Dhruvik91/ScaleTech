@@ -81,13 +81,110 @@ const server = http.createServer((request, response) => {
             });
         }
 
-    } else {
+    }
+    
+    // API for signin
+    else if (request.url == '/signIn'){
+        // API key to be returned in response
+        let signIn = {};
+
+        if (request.method != 'POST'){
+            signIn.isSuccess = false;
+            signIn.errorMessage = "Method must be POST";
+
+            response.write( JSON.stringify(signIn) );
+            response.end()
+        } else {
+            let body = '';
+
+            // for handling error
+            request.on('error', (err) => {
+                if(err) {
+                    response.writeHead(500, {'Content-Type': 'text/html'});
+                    response.write('An error occurred');
+                    response.end();
+                }
+            });
+
+            // reading chunks of POST data
+            request.on('data', chunk => {
+                body += chunk.toString();
+            });
+
+            request.on('end', () => {
+                // use parse() method
+                body = JSON.parse(body);
+
+                if (!('userName' in body || 'email' in body)){
+                    signIn.isSuccess = false;
+                    signIn.errorMessage = "atleast one of following is nedded: email or username";
+
+                    response.write( JSON.stringify(signIn) );
+                    response.end()
+                }
+                else if (!('password' in body)){
+                    signIn.isSuccess = false;
+                    signIn.errorMessage = "password is not given";
+
+                    response.write( JSON.stringify(signIn) );
+                    response.end()
+                }
+                else {
+                    checkSignInInfo(body.userName, body.email, body.password, signIn, response);
+                }
+            });
+        }
+    }
+    else {
         response.end();
     }
 });
 
 server.listen(80);
 
+
+async function checkSignInInfo(userName, email, password, signIn, response){
+    
+    client.query(userName === undefined ? `SELECT * FROM person WHERE email='${email}'` : `SELECT * FROM person WHERE username='${userName}'`, async (err, result) => {
+        if (err){
+            console.log(err);
+            signIn.isSuccess = false;
+            signIn.errorMessage = "Some SQL error occured";
+
+            response.write( JSON.stringify(signIn) );
+            response.end();
+        }
+        else {
+            if (result.rowCount == 0){
+                signIn.isSuccess = false;
+                signIn.errorMessage = "username or email didn't match";
+
+                response.write( JSON.stringify(signIn) );
+                response.end();
+            }
+            else{
+                // making hash of password
+                let passwordHash = await bcrypt.hash(password, 10);
+                console.log(passwordHash);
+
+                if (result.rows[0].password == passwordHash){
+                    signIn.isSuccess = true;
+                    signIn.errorMessage = "";
+
+                    response.write( JSON.stringify(signIn) );
+                    response.end();
+                }
+                else{
+                    signIn.isSuccess = false;
+                    signIn.errorMessage = "password didn't match";
+
+                    response.write( JSON.stringify(signIn) );
+                    response.end();
+                }
+            }
+        }
+    });
+}
 
 async function addSignUpInfo(firstName, lastName, email, password, userName, signUp, response) {
 
