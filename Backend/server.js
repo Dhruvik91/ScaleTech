@@ -3,7 +3,6 @@
 const pg = require('pg');
 const http = require('http');
 const bcrypt = require('bcrypt');
-const { sign } = require('crypto');
 
 // connecting to ElephantSQL
 let conString = "postgres://otalcrol:JcHKJRmTiPo0eKntu6R5zi3zq0L6PuBu@drona.db.elephantsql.com/otalcrol" //Can be found in the Details page
