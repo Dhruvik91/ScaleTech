@@ -3,6 +3,7 @@
 const pg = require('pg');
 const http = require('http');
 const bcrypt = require('bcrypt');
+const { sign } = require('crypto');
 
 // connecting to ElephantSQL
 let conString = "postgres://otalcrol:JcHKJRmTiPo0eKntu6R5zi3zq0L6PuBu@drona.db.elephantsql.com/otalcrol" //Can be found in the Details page
@@ -168,7 +169,10 @@ async function checkSignInInfo(userName, email, password, signIn, response){
 
                 if (doesPasswordMatch){
                     signIn.isSuccess = true;
-                    signIn.errorMessage = "";
+                    signIn.userName = result.rows[0].username;
+                    signIn.firstName = result.rows[0].first_name;
+                    signIn.lastName = result.rows[0].last_name;
+                    signIn.email = result.rows[0].email;
 
                     response.write( JSON.stringify(signIn) );
                     response.end();
