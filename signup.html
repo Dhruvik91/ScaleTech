@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup Page</title>
-    <link rel="icon" type="image/x-icon" href="Symbol.jpeg">
     <style>
     body {
     font-family: Arial, sans-serif;
@@ -12,19 +11,16 @@
     padding: 0;
 }
 .heading{
-    background-color: rgb(207, 207, 207);
+    background-color:rgba(217, 217, 217, 1);
     margin-right: -10px;
-    padding:35px;
+    padding:40px;
 }
 .wrapper{
   background-color: #fff;
-  width: 930px;
+  width: 1100px;
   padding-right: 10px;
   margin: 25px auto 0;
   box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-}
-.wrapper,h1,span{
-padding-left:px;
 }
 span{
     color: rgba(37,173,208,1);
@@ -32,14 +28,16 @@ span{
 .logo {
     display: inline;
     text-align: center;
-    margin-right: 50px;
-    padding-left: 50px
+    margin-right:70px;
 }
 .container{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 75vh;
+}
+.details{
+    width: 50%;
 }
 form {
     display: flex;
@@ -72,7 +70,10 @@ input[type="submit"] {
   padding: 5px 0;
 }
 .input-group input{
-  width: 230px;
+  width: 240px;
+}
+.input-box #lastName{
+    margin-left: 20px;
 }
     </style>
 </head>
@@ -81,24 +82,26 @@ input[type="submit"] {
         <h1 class="heading"><span>SCALE</span>TECH</h1>
     <div class="container">
         <div class="logo">
-           <img src="Symbol.jpeg" alt="scaletech logo" height="300px" width="300px">
+           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7H0u13wFrskVIje5pLMN3kCExmMAQzYOKaQwMYiHNT03LUJIiaoCkTBPqjwRpund-0hU&usqp=CAU" alt="scaletech logo" height="400px" width="400px">
         </div>
         <div class="details">
-            <form action="demo.js" method="post" onsubmit="return validateForm()">
+            <form action="#" method="post" onsubmit="return validateForm()">
                 <h1>Sign Up</h1>
-                <p>Already have an account?<a href="signIn.html" style="text-decoration: none; color:rgba(37, 173, 208, 0.94);"> Login</a></p>
+                <p>Have already account?<a href="#">Login</a></p>
                 <div class="input-group">
                     <div class="input-box">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
                     </div>
                     <div class="input-box">
-                        <label for="LastName">Last Name</label>
+                        <label for="LastName" id="lastName">Last Name</label>
                         <input type="text" id="lastName" name="LastName" placeholder="Last Name" required>
                     </div>
                 </div>
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Enter Your Email Address" required>
+                <label for="userName">User Name</label>
+                <input type="userName" id="userName" name="userName" placeholder="Enter Your User Name" required>
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
                 <label for="confirmPassword">Confirm Password</label>
@@ -110,16 +113,16 @@ input[type="submit"] {
 </div>
 </div>
 <script>
-    const password=document.getElementById('password');
-    const confirmPassword=document.getElementById('confirmPassword');
+     const password=document.getElementById('password');
+     const confirmPassword=document.getElementById('confirmPassword');
     function validateForm(){
-        if(password.value !== confirmPassword.value){
+        if(password.value!==confirmPassword.value){
             alert("Please Enter the same password");
             focus('password');
             return false;
         }
-        return true;
-    }
+            return true;
+        }
 </script>
 </body>
 </html>
