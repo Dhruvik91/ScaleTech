@@ -107,7 +107,7 @@ input[type="submit"] {
         // using fetch api
         let res = await fetch(`http://localhost:80/signIn`, {
             method: 'POST',
-            body: new URLSearchParams(new FormData(evt.srcElement)),
+            body: new URLSearchParams(new FormData(evt.target)),
         })
 
         res = await res.text();
