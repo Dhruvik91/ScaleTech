@@ -1,2 +1,9 @@
 # ignore node modules
 node_modules
+
+# ignore .env
+.env
+
+# ignore test files of divyanshu
+divyanshu_test.html
+divyanshu_test.js
