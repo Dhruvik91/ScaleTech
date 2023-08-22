@@ -45,7 +45,7 @@ app.post('/signUp', (req, res) => {
     ('password' in req.body) && 
     ('userName' in req.body)){
 
-        addSignUpInfo(req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.userName, signUp, res);
+        addSignUpInfo(req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.userName, res);
     } else {
         // if some of the fields are missing in api request
         let signUp = {};
@@ -141,7 +141,7 @@ async function checkSignInInfo(userName, email, password, res){
 }
 
 
-async function addSignUpInfo(firstName, lastName, email, password, userName, signUp, res){
+async function addSignUpInfo(firstName, lastName, email, password, userName, res){
 
     // checking if username or password already exists
     try{
@@ -153,7 +153,7 @@ async function addSignUpInfo(firstName, lastName, email, password, userName, sig
             signUp.isSuccess = false;
             signUp.errorMessage = "username or email already exists";
 
-            response.send(JSON.stringify(signUp));
+            res.send(JSON.stringify(signUp));
         } else {
             let passwordHash = await bcrypt.hash(password, 10);
 
@@ -170,7 +170,7 @@ async function addSignUpInfo(firstName, lastName, email, password, userName, sig
         console.log(err);
 
         let signUp = {};
-        
+
         signUp.isSuccess = false;
         signUp.errorMessage = `some SQL error occured`;
 
