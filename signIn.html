@@ -83,7 +83,7 @@ input[type="submit"] {
            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7H0u13wFrskVIje5pLMN3kCExmMAQzYOKaQwMYiHNT03LUJIiaoCkTBPqjwRpund-0hU&usqp=CAU" alt="scaletech logo" height="400px" width="400px">
         </div>
         <div class="details">
-            <form action="#" method="POST" >
+            <form action="" method="POST" onsubmit="return sendData(event)">
                 <h1>Sign In</h1>
                 
                 <label for="email">Email</label>
@@ -96,8 +96,23 @@ input[type="submit"] {
                 <p>Don't Have account?<a href="signup.html" style="text-decoration: none; color:rgba(37, 173, 208, 0.94);"> Create Account</a></p>
 
             </form>
+                        
         </div>
     </div>
 </div>
+<script>
+    async function sendData(evt) {
+        evt.preventDefault()
+
+        // using fetch api
+        let res = await fetch(`http://localhost:80/signIn`, {
+            method: 'POST',
+            body: new URLSearchParams(new FormData(evt.target)),
+        })
+
+        res = await res.text();
+        console.log(res);
+    }
+</script>
 </body>
 </html>
