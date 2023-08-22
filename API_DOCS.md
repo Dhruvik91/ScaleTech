@@ -4,6 +4,12 @@
 
 url: "http://localhost:80/signUp"
 
+### form fields:
+- firstName
+- lastName
+- email
+- password
+- userName
 ### responses:
 - {"isSuccess": true, "errorMessage": ""}
 - {"isSuccess": false, "errorMessage": "method can't be 'GET', it has to be 'POST'"}
@@ -16,6 +22,9 @@ url: "http://localhost:80/signUp"
 
 url: "http://localhost:80/signIn"
 
+### form feilds:
+- userName and/or email
+- password
 ### responses:
 - {"isSuccess": true, "userName": "divyanshu1593", "firstName": "Divyanshu", "lastName": "MOtivaras", "email": "divyanshu1593"}
 - {"isSuccess": false, "errorMessage": "method can't be 'GET', it has to be 'POST'"}
