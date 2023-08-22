@@ -180,5 +180,33 @@ async function addSignUpInfo(firstName, lastName, email, password, userName, res
 
 }
 
+app.post('/addblog', async (req, res) => {
+    const { title, description, content } = req.body;
+
+    try {
+        const result = await client.query("insert into blogs (title,description,content) values($1,$2,$3)", [title, description, content]);
+
+        let addBlog = {};
+
+        addBlog.isSuccess = true;
+        addBlog.title = result.rows[0].title;
+        addBlog.description = result.rows[0].description;
+        addBlog.content = result.rows[0].content;
+        addBlog.errorMessage = "";
+
+        res.send(JSON.stringify(addBlog));
+    }
+    catch (error) {
+        console.log(err);
+
+        let addBlog = {};
+
+        addBlog.isSuccess = false;
+        addBlog.errorMessage = `some SQL error occured`;
+
+        res.send(JSON.stringify(addBlog));
+    }
+});
+
 
 app.listen(80);
