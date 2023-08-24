@@ -168,67 +168,73 @@ async function addBlogToDatabase(userName, title, description, content, tags, re
 
             res.send(JSON.stringify(addBlog));
         }
-        else if (!Array.isArray(tags)){
-            let addBlog = {};
-
-            addBlog.isSuccess = false;
-            addBlog.errorMessage = `tags has to be an array`;
-
-            res.send(JSON.stringify(addBlog));
-        }
-        else if (tags.length > 10){
-            let addBlog = {};
-
-            addBlog.isSuccess = false;
-            addBlog.errorMessage = `there can be maximum 10 tags`;
-
-            res.send(JSON.stringify(addBlog));
-        }
         else {
-            lengthExceded = false;
-            for (let tag of tags){
-                if (tag.length > 20){
-                    lengthExceded = true;
-                    break;
-                }
-            }
-            if (lengthExceded){
+            // making an array of tags
+            tags = tags.split(',');
+            tags.forEach((item, index) => {
+                tags[index] = tags[index].trim();
+            });
+
+            let isAddTags = true;
+
+            if (tags.length == 1 && tags[0] == '') isAddTags = false;
+
+            if (tags.length > 10){
                 let addBlog = {};
 
                 addBlog.isSuccess = false;
-                addBlog.errorMessage = `length of a tag can't be more then 20 characters`;
+                addBlog.errorMessage = `there can be maximum 10 tags in a blog`;
 
                 res.send(JSON.stringify(addBlog));
             } else {
-                let result = await client.query(`INSERT INTO blogs (username, title, description, content) values ($1, $2, $3, $4)`, [userName, title, description, content]);
-                
-                // getting the blog id
-                let result2 = await client.query(`SELECT id FROM blogs ORDER BY datetime DESC LIMIT 1`);
-                let blog_id = result2.rows[0].id;
-
+                invalidLength = false;
                 for (let tag of tags){
-                    // checking if the tag already exists
-                    let result = await client.query(`SELECT tag FROM tags WHERE tag = $1`, [tag]);
+                    if (tag.length > 20){
+                        invalidLength = true;
+                        break;
+                    }
+                }
+                if (invalidLength){
+                    let addBlog = {};
 
-                    if (result.rowCount == 0){
-                        // tag does not exist
-                        // so adding the tag in the database
-                        let result = await client.query(`INSERT INTO tags (tag) VALUES ($1)`, [tag]);
+                    addBlog.isSuccess = false;
+                    addBlog.errorMessage = `length of a tag cant't be more then 20`;
+
+                    res.send(JSON.stringify(addBlog));
+                } else {
+                    let result = await client.query(`INSERT INTO blogs (username, title, description, content) values ($1, $2, $3, $4)`, [userName, title, description, content]);
+                    
+                    if (isAddTags){
+                        // getting the blog id
+                        let result2 = await client.query(`SELECT id FROM blogs ORDER BY datetime DESC LIMIT 1`);
+                        let blog_id = result2.rows[0].id;
+
+                        for (let tag of tags){
+                            // checking if the tag already exists
+                            let result = await client.query(`SELECT tag FROM tags WHERE tag = $1`, [tag]);
+                            
+                            if (result.rowCount == 0){
+                                // tag does not exist
+                                // so adding the tag in the database
+                                let result = await client.query(`INSERT INTO tags (tag) VALUES ($1)`, [tag]);
+                            }
+
+                            // adding blog id to tag
+                            let result2 = await client.query(`UPDATE tags
+                                                            SET blogs = blogs || $1 :: hstore
+                                                            WHERE tag = $2`, [`"${blog_id}" => "1"`, tag]);
+                        }
                     }
 
-                    // adding blog id to tag
-                    let result2 = await client.query(`UPDATE tags
-                                                      SET blogs = blogs || '"$1" => "1"' :: hstore
-                                                      WHERE tag = $2`, [blog_id, tag]);
+                    let addBlog = {};
+
+                    addBlog.isSuccess = true;
+                    addBlog.errorMessage = "";
+
+                    res.send(JSON.stringify(addBlog));
                 }
-
-                let addBlog = {};
-
-                addBlog.isSuccess = true;
-                addBlog.errorMessage = "";
-
-                res.send(JSON.stringify(addBlog));
             }
+            
         }
 
     } catch(err) {
