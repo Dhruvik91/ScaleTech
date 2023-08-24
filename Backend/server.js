@@ -92,6 +92,156 @@ app.post('/signIn', (req, res) => {
 });
 
 
+// making API for adding a new blog to database
+
+app.get('/addBlog', (req, res) => {
+    let addBlog = {};
+
+    addBlog.isSuccess = false;
+    addBlog.errorMessage = `method can't be 'GET', it has to be 'POST'`;
+
+    res.send(JSON.stringify(addBlog));
+});
+
+
+app.post('/addBlog', (req, res) => {
+    let {userName, title, description, content, tags} = req.body;
+
+    if (userName === undefined || title === undefined || description === undefined || content === undefined){
+        let addBlog = {};
+
+        addBlog.isSuccess = false;
+        addBlog.errorMessage = `some of the fields are missing`;
+
+        res.send(JSON.stringify(addBlog));
+    } else {
+        addBlogToDatabase(userName, title, description, content, tags, res);
+    }
+});
+
+
+async function addBlogToDatabase(userName, title, description, content, tags, res){
+    try{
+        // checking if the username is valid
+        let result = await client.query(`SELECT username FROM person WHERE username=$1`, [userName]);
+
+        if (result.rowCount == 0){
+            // so the username does not eixst
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `username does not exist`;
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (title.length > 100){
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `title length can't be more than 100 characters`
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (description.length > 500){
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `description length can't be more than 500 characters`
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (content.length > 10000){
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `content length can't be more than 10000 characters`
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (tags === undefined){
+            let result = await client.query(`INSERT INTO blogs (username, title, description, content) values ($1, $2, $3, $4)`, [userName, title, description, content]);
+
+            let addBlog = {};
+
+            addBlog.isSuccess = true;
+            addBlog.errorMessage = "";
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (!Array.isArray(tags)){
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `tags has to be an array`;
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else if (tags.length > 10){
+            let addBlog = {};
+
+            addBlog.isSuccess = false;
+            addBlog.errorMessage = `there can be maximum 10 tags`;
+
+            res.send(JSON.stringify(addBlog));
+        }
+        else {
+            lengthExceded = false;
+            for (let tag of tags){
+                if (tag.length > 20){
+                    lengthExceded = true;
+                    break;
+                }
+            }
+            if (lengthExceded){
+                let addBlog = {};
+
+                addBlog.isSuccess = false;
+                addBlog.errorMessage = `length of a tag can't be more then 20 characters`;
+
+                res.send(JSON.stringify(addBlog));
+            } else {
+                let result = await client.query(`INSERT INTO blogs (username, title, description, content) values ($1, $2, $3, $4)`, [userName, title, description, content]);
+                
+                // getting the blog id
+                let result2 = await client.query(`SELECT id FROM blogs ORDER BY datetime DESC LIMIT 1`);
+                let blog_id = result2.rows[0].id;
+
+                for (let tag of tags){
+                    // checking if the tag already exists
+                    let result = await client.query(`SELECT tag FROM tags WHERE tag = $1`, [tag]);
+
+                    if (result.rowCount == 0){
+                        // tag does not exist
+                        // so adding the tag in the database
+                        let result = await client.query(`INSERT INTO tags (tag) VALUES ($1)`, [tag]);
+                    }
+
+                    // adding blog id to tag
+                    let result2 = await client.query(`UPDATE tags
+                                                      SET blogs = blogs || '"$1" => "1"' :: hstore
+                                                      WHERE tag = $2`, [blog_id, tag]);
+                }
+
+                let addBlog = {};
+
+                addBlog.isSuccess = true;
+                addBlog.errorMessage = "";
+
+                res.send(JSON.stringify(addBlog));
+            }
+        }
+
+    } catch(err) {
+        console.log(err);
+
+        let addBlog = {};
+
+        addBlog.isSuccess = false;
+        addBlog.errorMessage = `some SQL error occured`;
+
+        res.send(JSON.stringify(addBlog));
+    }
+}
 
 async function checkSignInInfo(userName, email, password, res){
     try{
@@ -179,34 +329,6 @@ async function addSignUpInfo(firstName, lastName, email, password, userName, res
     
 
 }
-
-app.post('/addblog', async (req, res) => {
-    const { title, description, content } = req.body;
-
-    try {
-        const result = await client.query("insert into blogs (title,description,content) values($1,$2,$3)", [title, description, content]);
-
-        let addBlog = {};
-
-        addBlog.isSuccess = true;
-        addBlog.title = result.rows[0].title;
-        addBlog.description = result.rows[0].description;
-        addBlog.content = result.rows[0].content;
-        addBlog.errorMessage = "";
-
-        res.send(JSON.stringify(addBlog));
-    }
-    catch (error) {
-        console.log(err);
-
-        let addBlog = {};
-
-        addBlog.isSuccess = false;
-        addBlog.errorMessage = `some SQL error occured`;
-
-        res.send(JSON.stringify(addBlog));
-    }
-});
 
 
 app.listen(80);
