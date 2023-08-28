@@ -7,3 +7,6 @@ node_modules
 # ignore test files of divyanshu
 divyanshu_test.html
 divyanshu_test.js
+
+# ignore test.rest file
+test.rest
