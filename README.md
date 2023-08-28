@@ -13,7 +13,7 @@ This repo is for collabrative porject for a blog website for ScaleTech. In this 
 ## how to run:
 - git clone it.
 - run "npm install" on cmd
-- add .env file with DB_URL in it
+- name sample.env to .env and insert the value of variables
 - run server.js
 - run any html page you want (for now only signup page is integrated with backend)
 
