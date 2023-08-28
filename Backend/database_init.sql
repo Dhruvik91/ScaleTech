@@ -22,8 +22,9 @@ CREATE TABLE blogs(
 
 -- creating tags table
 CREATE TABLE tags(
-    tag varchar(20) PRIMARY KEY,
+    tag varchar(20),
     blog_id uuid,
+    PRIMARY KEY(tag, blog_id),
     FOREIGN KEY(blog_id)
         REFERENCES blogs(id)
             ON DELETE CASCADE
