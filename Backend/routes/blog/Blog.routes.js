@@ -1,5 +1,7 @@
 const { Router } = require("express")
 const { addBlogToDatabase } = require("./Blog.service")
+const { addBlogSchema } = require("../../model/validations")
+const jwt = require('jsonwebtoken')
 
 const blogRouter = Router()
 
@@ -15,17 +17,38 @@ blogRouter.get('/:id', async (req, res) => {
 })
 
 // CREATE
-blogRouter.post('/', async (req, res) => {
+blogRouter.post('/addBlog', authorize, async (req, res) => {
+  let validatedData = addBlogSchema.safeParse(req.body);
 
-  const validatedBlog = await BlogValidationSchema.safeParseAsync(req.body)
-  if (!validatedBlog.success) {
-    return res.status(400).json(validatedBlog.error.formErrors.fieldErrors)
+  if (validatedData.success){
+    console.log(validatedData.data.tags);
+    let response = await addBlogToDatabase(req.user.userName, validatedData.data.title, validatedData.data.description,
+      validatedData.data.content, validatedData.data.tags);
+    res.json(response);
+    return ;
   }
-
-  const response = addBlogToDatabase(userName, title, description, content, tags);
-  res.json(response)
-
+  res.json({
+    success: false,
+    errorMessage: validatedData.error,
+  });
 })
+
+function authorize(req, res, next){
+  let authHeader = req.headers['authorization'];
+  let token = authHeader.split(' ')[1];
+
+  jwt.verify(token, process.env.JWT_TOKEN_KEY, (err, user) => {
+    if (err){
+      res.status(403).json({
+        success: false,
+        errorMessage: "Invalid token",
+      });
+      return ;
+    }
+    req.user = user;
+    next();
+  });
+}
 
 // UPDATE
 blogRouter.patch('/:id', async (req, res) => {
