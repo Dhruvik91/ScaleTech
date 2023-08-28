@@ -17,7 +17,41 @@ let signInSchema = z.object({
   message: "atleast one of the following is required: email or userName",
 });
 
+
+let addBlogSchema = z.object({
+  title: z.string().min(1).max(100),
+  description: z.string().min(1).max(500),
+  content: z.string().min(1).max(10000),
+  tags: z.string().transform((val, ctx) => {
+    val = val.split(',');
+    if (val.length > 10){
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "there should be at max 10 tags",
+      });
+
+      return z.NEVER;
+    }
+    for (let i=0; i<val.length; i++){
+      val[i] = val[i].trim();
+      
+      if (val[i].length > 20){
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "length of tag should be at max 20",
+        });
+        
+        return z.NEVER;
+      }
+    }
+
+    return val;
+  })
+});
+
+
 module.exports = {
   signUpSchema,
   signInSchema,
+  addBlogSchema,
 };
