@@ -1,12 +1,22 @@
 const { Router } = require("express")
 const { addSignUpInfo, checkSignInInfo } = require("./User.service")
-const { signUpSchema } = require("../../model/validations");
+const { signUpSchema, signInSchema } = require("../../model/validations");
 
 const userRouter = Router()
 
 // LOGIN
-userRouter.post('/signin', async (req, res) => {
+userRouter.post('/signIn', async (req, res) => {
+  let validatedData = signInSchema.safeParse(req.body);
 
+  if (validatedData.success){
+    let response = await checkSignInInfo(validatedData.data.userName, validatedData.data.email, validatedData.data.password);
+    res.json(response);
+    return ;
+  }
+  res.json({
+    success: false,
+    errorMessage: validatedData.error,
+  });
 });
 
 

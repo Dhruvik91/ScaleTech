@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt")
 const client = require("../../model/database")
+const jwt = require('jsonwebtoken')
 
 async function checkSignInInfo(userName, email, password) {
   try {
@@ -10,14 +11,14 @@ async function checkSignInInfo(userName, email, password) {
       result = await client.query(`SELECT * FROM person WHERE email=$1;`, [email])
     } else {
       return {
-        isSuccess: false,
+        success: false,
         errorMessage: "username or email weren't provided",
       }
     }
 
     if (result.rowCount == 0) {
       return {
-        isSuccess: false,
+        success: false,
         errorMessage: "username or email didn't match",
       }
     }
@@ -25,24 +26,30 @@ async function checkSignInInfo(userName, email, password) {
 
     if (!doesPasswordMatch) {
       return {
-        isSuccess: false,
+        success: false,
         errorMessage: `password didn't match`
       }
     }
 
+    // making jwt token
+    let token = jwt.sign({
+      userName: result.rows[0].username,
+    }, process.env.JWT_TOKEN_KEY);
+
     return {
-      isSuccess: true,
+      success: true,
       userName: result.rows[0].username,
       firstName: result.rows[0].first_name,
       lastName: result.rows[0].last_name,
       email: result.rows[0].email,
+      token,
     }
 
   } catch (err) {
     console.log(err);
 
     return {
-      isSuccess: false,
+      success: false,
       errorMessage: `some SQL error occured`
     }
   }
