@@ -1,23 +1,12 @@
 const { Router } = require("express")
 const { addSignUpInfo, checkSignInInfo } = require("./User.service")
-const {
-  LoginUserSchema,
-  UserValidationSchema,
-} = require("../../model/validations");
+const { signUpSchema } = require("../../model/validations");
 
 const userRouter = Router()
 
 // LOGIN
 userRouter.post('/signin', async (req, res) => {
 
-  const validatedData = await LoginUserSchema.safeParseAsync(req.body)
-
-  if (!validatedData.success) {
-    return res.status(400).json(validatedData.error.formErrors.fieldErrors)
-  }
-
-  const response = await checkSignInInfo(validatedData.data.username, null /*STUB*/, validatedData.data.password);
-  res.send(response)
 });
 
 
@@ -38,23 +27,20 @@ userRouter.get('/:id', async (req, res) => {
 })
 
 // CREATE
-userRouter.post('/', async (req, res) => {
+userRouter.post('/signUp', async (req, res) => {
+  let validatedData = signUpSchema.safeParse(req.body);
 
-  let validatedData = await UserValidationSchema.safeParseAsync(req.body)
-
-  if (!validatedData.success) {
-    return res.status(400).json(validatedData.error.formErrors.fieldErrors)
+  if (validatedData.success){
+    let response = await addSignUpInfo(validatedData.data.firstName, validatedData.data.lastName,
+       validatedData.data.email, validatedData.data.password, validatedData.data.userName);
+    
+    res.json(response);
+    return ;
   }
-
-  const insertResponse = await addSignUpInfo(
-    validatedData.data.first_name,
-    validatedData.data.last_name,
-    validatedData.data.email,
-    validatedData.data.password,
-    validatedData.data.username,
-  )
-
-  return res.json(insertResponse)
+  res.json({
+    success: false,
+    errorMessage: validatedData.error,
+  });
 })
 
 // UPDATE

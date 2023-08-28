@@ -57,28 +57,24 @@ async function addSignUpInfo(firstName, lastName, email, password, userName) {
     const result = await client.query(`SELECT username FROM person WHERE username=$1 OR email=$2`, [userName, email]);
 
     if (result.rowCount != 0) {
-      let signUp = {};
-
-      signUp.isSuccess = false;
-      signUp.errorMessage = "username or email already exists";
-
-      return signUp;
-    } else {
-      let passwordHash = await bcrypt.hash(password, 10);
-
-      await client.query(`INSERT INTO person VALUES ($1, $2, $3, $4, $5)`, [userName, firstName, lastName, email, passwordHash]);
-
-      return { isSuccess: true }
+      return {
+        success: false,
+        errorMessage: "email or username already exist!",
+      };
     }
+
+    let passwordHash = await bcrypt.hash(password, 10);
+
+    await client.query(`INSERT INTO person VALUES ($1, $2, $3, $4, $5)`, [userName, firstName, lastName, email, passwordHash]);
+
+    return { success: true };
   } catch (err) {
     console.log(err);
 
-    let signUp = {};
-
-    signUp.isSuccess = false;
-    signUp.errorMessage = `some SQL error occured`;
-
-    return signUp;
+    return {
+      success: false,
+      errorMessage: "some SQL error occured",
+    };
   }
 
 
