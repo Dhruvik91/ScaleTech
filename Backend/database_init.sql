@@ -23,5 +23,8 @@ CREATE TABLE blogs(
 -- creating tags table
 CREATE TABLE tags(
     tag varchar(20) PRIMARY KEY,
-    blogs hstore DEFAULT '' :: hstore  -- this field will store id of blogs table as key
+    blog_id uuid,
+    FOREIGN KEY(blog_id)
+        REFERENCES blogs(id)
+            ON DELETE CASCADE
 );
