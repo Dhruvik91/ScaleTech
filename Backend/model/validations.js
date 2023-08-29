@@ -35,10 +35,10 @@ let addBlogSchema = z.object({
     for (let i=0; i<val.length; i++){
       val[i] = val[i].trim();
       
-      if (val[i].length > 20){
+      if (val[i].length > 20 || val[i].length < 1){
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "length of tag should be at max 20",
+          message: "length of tag should be between 1 to 20 inclusive",
         });
         
         return z.NEVER;
@@ -46,7 +46,7 @@ let addBlogSchema = z.object({
     }
 
     return val;
-  })
+  }).optional()
 });
 
 

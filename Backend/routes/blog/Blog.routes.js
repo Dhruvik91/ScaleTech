@@ -21,7 +21,6 @@ blogRouter.post('/addBlog', authorize, async (req, res) => {
   let validatedData = addBlogSchema.safeParse(req.body);
 
   if (validatedData.success){
-    console.log(validatedData.data.tags);
     let response = await addBlogToDatabase(req.user.userName, validatedData.data.title, validatedData.data.description,
       validatedData.data.content, validatedData.data.tags);
     res.json(response);
