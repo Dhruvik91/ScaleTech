@@ -1,13 +1,15 @@
 const { Router } = require("express")
-const { addBlogToDatabase } = require("./Blog.service")
+const { addBlogToDatabase, getAllBlogs } = require("./Blog.service")
 const { addBlogSchema } = require("../../model/validations")
 const jwt = require('jsonwebtoken')
 
 const blogRouter = Router()
 
 // LIST 
-blogRouter.get('/', async (req, res) => {
-  res.send({ success: false, error: "NOT IMPLEMENTED" })
+blogRouter.get('/allBlogs', async (req, res) => {
+  let response = await getAllBlogs();
+
+  res.json(response);
 })
 
 // VIEW 

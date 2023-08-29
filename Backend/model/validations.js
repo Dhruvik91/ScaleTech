@@ -1,9 +1,14 @@
 z = require('zod');
 
+let usernameRegex = /^[a-z0-9_]{1,30}$/i;
+let tagRegex = /^[a-z0-9_]{1,30}$/i;
+
 let signUpSchema = z.object({
   firstName: z.string().min(1).max(30),
   lastName: z.string().min(1).max(30),
-  userName: z.string().min(1).max(30),
+  userName: z.string().min(1).max(30).refine(val => usernameRegex.test(val), {
+    message: "username can only contain alphanumeric characters and underscore"
+  }),
   password: z.string(),
   email: z.string().min(1).max(30).email(),
 });
@@ -44,6 +49,15 @@ let addBlogSchema = z.object({
           message: "length of tag should be between 1 to 20 inclusive",
         });
         
+        return z.NEVER;
+      }
+
+      if (!tagRegex.test(val[i])){
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "tag can only contain alphanumeric character and underscore",
+        });
+
         return z.NEVER;
       }
     }

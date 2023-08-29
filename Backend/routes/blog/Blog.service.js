@@ -46,6 +46,37 @@ async function addBlogToDatabase(userName, title, description, content, tags) {
 }
 
 
+async function getAllBlogs(){
+  try{
+    let result = await client.query(`SELECT * FROM blogs`);
+    
+    let blogs = result.rows;
+
+    for (let blog of blogs){
+      let result = await client.query(`SELECT tag FROM tags WHERE blog_id=$1`, [blog.id]);
+      
+      blog.tags = [];
+
+      for (tag of result.rows){
+        blog.tags.push(tag.tag);
+      }
+    }
+    
+    return {
+      success: true,
+      blogs
+    }
+  } catch(err) {
+    console.log(err);
+
+    return {
+      success: false,
+      errorMessage: "some SQL error occured"
+    }
+  }
+}
+
 module.exports = {
-  addBlogToDatabase
+  addBlogToDatabase,
+  getAllBlogs,
 }
