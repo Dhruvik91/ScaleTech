@@ -46,22 +46,49 @@ async function addBlogToDatabase(userName, title, description, content, tags) {
 }
 
 
+async function addTags(blogs){
+  for (let blog of blogs){
+    let result = await client.query(`SELECT tag FROM tags WHERE blog_id=$1`, [blog.id]);
+    
+    blog.tags = [];
+
+    for (tag of result.rows){
+      blog.tags.push(tag.tag);
+    }
+  }
+}
+
 async function getAllBlogs(){
   try{
     let result = await client.query(`SELECT * FROM blogs`);
     
     let blogs = result.rows;
 
-    for (let blog of blogs){
-      let result = await client.query(`SELECT tag FROM tags WHERE blog_id=$1`, [blog.id]);
-      
-      blog.tags = [];
-
-      for (tag of result.rows){
-        blog.tags.push(tag.tag);
-      }
-    }
+    await addTags(blogs);
     
+    return {
+      success: true,
+      blogs
+    }
+  } catch(err) {
+    console.log(err);
+
+    return {
+      success: false,
+      errorMessage: "some SQL error occured"
+    }
+  }
+}
+
+
+async function getBlogsByUsername(userName){
+  try{
+    let result = await client.query(`SELECT * FROM blogs WHERE username=$1`, [userName]);
+
+    blogs = result.rows;
+
+    await addTags(blogs);
+
     return {
       success: true,
       blogs
@@ -79,4 +106,5 @@ async function getAllBlogs(){
 module.exports = {
   addBlogToDatabase,
   getAllBlogs,
+  getBlogsByUsername,
 }

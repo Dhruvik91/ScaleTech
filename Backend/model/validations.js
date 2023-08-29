@@ -67,8 +67,13 @@ let addBlogSchema = z.object({
 });
 
 
+let usernameSchema = z.string().min(1).max(30).refine(val => usernameRegex.test(val), {
+  message: "username can only contain alphanumeric characters and underscore"
+});
+
 module.exports = {
   signUpSchema,
   signInSchema,
   addBlogSchema,
+  usernameSchema,
 };

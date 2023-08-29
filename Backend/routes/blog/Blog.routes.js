@@ -1,6 +1,6 @@
 const { Router } = require("express")
-const { addBlogToDatabase, getAllBlogs } = require("./Blog.service")
-const { addBlogSchema } = require("../../model/validations")
+const { addBlogToDatabase, getAllBlogs, getBlogsByUsername } = require("./Blog.service")
+const { addBlogSchema, usernameSchema } = require("../../model/validations")
 const jwt = require('jsonwebtoken')
 
 const blogRouter = Router()
@@ -12,11 +12,22 @@ blogRouter.get('/allBlogs', async (req, res) => {
   res.json(response);
 })
 
-// VIEW 
-blogRouter.get('/:id', async (req, res) => {
-  // search in DB
-  res.send({ success: false, error: "NOT IMPLEMENTED" })
-})
+// VIEW
+blogRouter.get('/blogsByUsername', async (req, res) => {
+  let validatedData = usernameSchema.safeParse(req.query.userName);
+
+  if (validatedData.success){
+    let response = await getBlogsByUsername(validatedData.data);
+
+    res.json(response);
+    return ;
+  }
+
+  res.json({
+    success: false,
+    errorMessage: validatedData.error,
+  });
+});
 
 // CREATE
 blogRouter.post('/addBlog', authorize, async (req, res) => {
