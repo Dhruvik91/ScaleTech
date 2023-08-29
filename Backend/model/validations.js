@@ -32,6 +32,9 @@ let addBlogSchema = z.object({
 
       return z.NEVER;
     }
+    
+    if (val.length == 1 && val[0].trim() === '') return undefined;
+
     for (let i=0; i<val.length; i++){
       val[i] = val[i].trim();
       
