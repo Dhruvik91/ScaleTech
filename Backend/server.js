@@ -36,7 +36,11 @@ apiRouter.use("/blog", blogRouter)
 app.use("/api", apiRouter)
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'signIn.html'));
+    res.sendFile(path.resolve(__dirname, '../signIn.html'));
+});
+
+app.get("/static/Symbol", (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../static/Symbol.jpeg'));
 });
 
 app.listen(PORT);
