@@ -34,4 +34,8 @@ apiRouter.use("/blog", blogRouter)
 
 app.use("/api", apiRouter)
 
+app.get("/", (req, res) => {
+    res.redirect('../signIn.html');
+});
+
 app.listen(PORT);
