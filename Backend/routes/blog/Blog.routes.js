@@ -1,6 +1,6 @@
 const { Router } = require("express")
-const { addBlogToDatabase, getAllBlogs, getBlogsByUsername } = require("./Blog.service")
-const { addBlogSchema, usernameSchema } = require("../../model/validations")
+const { addBlogToDatabase, getAllBlogs, getBlogsByUsername, getBlogsByTags } = require("./Blog.service")
+const { addBlogSchema, usernameSchema, tagsSchema } = require("../../model/validations")
 const jwt = require('jsonwebtoken')
 
 const blogRouter = Router()
@@ -18,6 +18,23 @@ blogRouter.get('/blogsByUsername', async (req, res) => {
 
   if (validatedData.success){
     let response = await getBlogsByUsername(validatedData.data);
+
+    res.json(response);
+    return ;
+  }
+
+  res.json({
+    success: false,
+    errorMessage: validatedData.error,
+  });
+});
+
+// VIEW
+blogRouter.get('/blogsByTags', async (req, res) => {
+  let validatedData = tagsSchema.safeParse(req.query.tags);
+
+  if (validatedData.success){
+    let response = await getBlogsByTags(validatedData.data);
 
     res.json(response);
     return ;

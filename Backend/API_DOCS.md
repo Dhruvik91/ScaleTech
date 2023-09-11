@@ -68,3 +68,57 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRpd
 ### responses
 - {"success": "true"}
 - {"success": "false", "errorMessage": "some error message"}
+
+## listing all blogs API
+
+url: "http://localhost:3000/api/blog/allBlogs"
+
+method: GET
+
+### responses:
+- {"success": "true", "blogs": array of blogs objects}
+- {"success": "false", "errorMessage": some error message}
+
+## geting blog by username API
+
+url: "http://localhost:3000/api/blog/blogsByUsername"
+
+method: GET
+
+### GET Parameters
+| parameter name | parameter value |
+| -------------- | --------------- |
+| userName       | username        |
+
+> here username is a valid username, so all blogs added with this username will be returned
+
+Example:
+```http
+GET http://localhost:3000/api/blog/blogsByUsername?userName=divyanshu1593
+```
+
+### responses:
+- {"success": "true", "blogs": array of blogs objects}
+- {"success": "false", "errorMessage": some error message}
+## get blogs by tags API
+
+url: http://localhost:3000/api/blog/blogsByTags
+
+method: GET
+
+### GET Parameters
+
+| parameter name | parameter value |
+|---|---|
+| tags | this is optional and should be a string of comma seperated tags with each tag of 1 to 20 characters inclusive (max 10 tags are allowed and giving and empty string is same as not adding any tag) |
+
+> tags parameter is optional. If not provided simply all the blogs are listed, and if provided than all the blogs that have atleast one of the tag from the given parameter will be returned
+
+Example:
+```http
+GET http://localhost:3000/api/blog/blogsByTags?tags=tag1,tag2
+```
+
+### responses:
+- {"success": "true", "blogs": array of blogs objects}
+- {"success": "false", "errorMessage": some error message}

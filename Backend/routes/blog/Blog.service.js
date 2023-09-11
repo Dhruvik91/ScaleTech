@@ -103,8 +103,41 @@ async function getBlogsByUsername(userName){
   }
 }
 
+async function getBlogsByTags(tags){
+  if (!tags) return getAllBlogs();
+
+  try{
+    let condition = [];
+
+    for (let i=0; i<tags.length; i++){
+      condition.push(`tag=$${i+1}`);
+    }
+
+    condition = condition.join(' OR ');
+
+    let result = await client.query(`SELECT blogs.*, ARRAY_AGG(tags.tag) AS tags FROM blogs
+    INNER JOIN tags
+    ON blogs.id = tags.blog_id
+    WHERE ${condition}
+    GROUP BY blogs.id`, tags);
+
+    return {
+      success: true,
+      blogs: result.rows,
+    }
+  } catch(err) {
+    console.log(err);
+
+    return {
+      success: false,
+      errorMessage: 'some SQL error occured',
+    }
+  } 
+}
+
 module.exports = {
   addBlogToDatabase,
   getAllBlogs,
   getBlogsByUsername,
+  getBlogsByTags,
 }
