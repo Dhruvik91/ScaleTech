@@ -1,6 +1,7 @@
 // setting environment variables
 require('dotenv').config();
 
+const path = require("path");
 const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -35,7 +36,7 @@ apiRouter.use("/blog", blogRouter)
 app.use("/api", apiRouter)
 
 app.get("/", (req, res) => {
-    res.redirect('../signIn.html');
+    res.sendFile(path.join(process.cwd(), 'signIn.html'));
 });
 
 app.listen(PORT);

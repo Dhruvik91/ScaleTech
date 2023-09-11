@@ -1,6 +1,6 @@
 # ScaleTech
 
-This repo is for collabrative porject for a blog website for ScaleTech. In this project we are making an full stack website with following feature:
+This repo is for collabrative project for a blog website for ScaleTech. In this project we are making an full stack website with following features:
 
  - home page
  - login page
