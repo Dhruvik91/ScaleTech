@@ -1,5 +1,5 @@
 --  creating person table
-CREATE TABLE person(
+CREATE TABLE IF NOT EXISTS person(
     username varchar(30) PRIMARY KEY,
     first_name varchar(30),
     last_name varchar(30),
@@ -8,7 +8,7 @@ CREATE TABLE person(
 );
 
 -- creating blogs table
-CREATE TABLE blogs(
+CREATE TABLE IF NOT EXISTS blogs(
     id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     username varchar(30),
     title varchar(100),
@@ -21,7 +21,7 @@ CREATE TABLE blogs(
 );
 
 -- creating tags table
-CREATE TABLE tags(
+CREATE TABLE IF NOT EXISTS tags(
     tag varchar(20),
     blog_id uuid,
     PRIMARY KEY(tag, blog_id),

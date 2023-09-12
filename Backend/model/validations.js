@@ -3,12 +3,15 @@ z = require('zod');
 let usernameRegex = /^[a-z0-9_]{1,30}$/i;
 let tagRegex = /^[a-z0-9_]{1,30}$/i;
 
+// todo : add confirm password refinement
 let signUpSchema = z.object({
+  // TODO : trim all strings 
   firstName: z.string().min(1).max(30),
   lastName: z.string().min(1).max(30),
   userName: z.string().min(1).max(30).refine(val => usernameRegex.test(val), {
     message: "username can only contain alphanumeric characters and underscore"
   }),
+  // todo: trim and set minimum length
   password: z.string(),
   email: z.string().min(1).max(30).email(),
 });

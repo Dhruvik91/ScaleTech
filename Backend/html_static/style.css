@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: Arial, sans-serif;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: rgba(217, 217, 217, 1);
+    overflow: hidden;
+
+}
+
+/* Style the links inside the navigation bar */
+.topnav .aa {
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 36px 36px;
+    text-decoration: none;
+    font-size: 27px;
+}
+
+/* Change the color of links on hover */
+.topnav .aa:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* the styles for the button */
+.button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 11px 29px 12px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 32px 27px;
+    cursor: pointer;
+    border-radius: 39px;
+    float: right;
+}
+
+
+.container h2 {
+    text-align: center;
+    padding: 50px;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    animation: upwards 2s 1s top;
+    animation: fadeIn 1.5s;
+}
+
+.container p {
+    text-align: center;
+    padding: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    animation: fadeIn 2.5s;
+}
+
+/* /* Blog list styles */
+
+  #blogList {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0px;
+    max-width: 400px;
+    margin: 100px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+}
