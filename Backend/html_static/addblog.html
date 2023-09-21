@@ -81,23 +81,28 @@
                         <label for="Title">Title</label>
                         <input type="text" class="form-control" placeholder="Add Title" id="Title" />
                     </div>
+                    
                     <div class="form-group">
                         <label for="Description">Description</label>
                         <input type="text" class="form-control" placeholder="Add Description" id="Description" />
                     </div>
+                    
                     <div class="form-group">
                         <label for="Tags">Tags</label>
                         <input type="text" class="form-control" placeholder="Add Tags" id="Tags" />
                     </div>
+                    
                     <div class="form-group">
                         <label for="Content">Content</label>
                         <input type="text" class="form-control" placeholder="Add Content" id="Content" />
                     </div>
-                    <input type="submit" class="btn btn-primary px-4" value="Post">
+                    <br>
+                    <input type="submit" class="btn btn-primary px-4" value="Post" onclick="createBlog()">
                 </div>
             </div>
         </div>
     </div>
+    <script src="script.js"> </script>
     <script>
         const formContainer = document.getElementById("form")
         const blogsContainer = document.getElementById("blogs-container")
