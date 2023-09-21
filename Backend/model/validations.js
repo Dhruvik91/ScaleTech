@@ -3,24 +3,30 @@ z = require('zod');
 let usernameRegex = /^[a-z0-9_]{1,30}$/i;
 let tagRegex = /^[a-z0-9_]+$/i;
 
+
 // todo : add confirm password refinement
 let signUpSchema = z.object({
   // TODO : trim all strings
-  firstName: z.string().min(1).max(30),
-  lastName: z.string().min(1).max(30),
-  userName: z.string().min(1).max(30).refine(val => usernameRegex.test(val), {
+  firstName: z.string().trim().min(1).max(30),
+  lastName: z.string().trim().min(1).max(30),
+  userName: z.string().trim().min(1).max(30).refine(val => usernameRegex.test(val), {
     message: "username can only contain alphanumeric characters and underscore"
   }),
   // todo: trim and set minimum length
-  password: z.string(),
-  email: z.string().min(1).max(30).email(),
+  password: z.string().trim().min(1),
+  confirmPassword: z.string().trim().min(1),
+  email: z.string().trim().min(1).max(30).email(),
 });
 
+signUpSchema = signUpSchema.refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ['confirmPassword'], // This will point to the confirmPassword field in the error message
+});
 
 let signInSchema = z.object({
-  userName: z.string().min(1).max(30).optional(),
-  email: z.string().min(1).max(30).email().optional(),
-  password: z.string(),
+  userName: z.string().trim().min(1).max(30).optional(),
+  email: z.string().trim().min(1).max(30).email().optional(),
+  password: z.string().trim(),
 }).refine(val => val.email !== undefined || val.userName !== undefined, {
   message: "atleast one of the following is required: email or userName",
 });
@@ -32,7 +38,7 @@ const SingleTagValidation = z.string()
   })
 
 let tagsSchema = z
-  .string()
+  .string().trim()
   .transform(x =>
     x.split(',').map(y => y.trim()).filter(z => z !== '')
   )
