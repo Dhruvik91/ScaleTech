@@ -75,6 +75,11 @@
     background-color: #ddd;
 }
 
+.blogItem:hover {
+    filter: brightness(90%);
+    transition: filter 0.3s ease;
+}
+
 .blogItem .blogInfo {
     flex-grow: 1;
     text-align: center;
