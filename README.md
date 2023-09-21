@@ -1,6 +1,6 @@
 # ScaleTech
 
-This repo is for collabrative project for a blog website for ScaleTech. In this project we are making an full stack website with following features:
+This repo is for collaborative project for a blog website for ScaleTech. In this project we are making an full stack website with following features:
 
  - home page
  - login page
@@ -15,5 +15,5 @@ This repo is for collabrative project for a blog website for ScaleTech. In this 
 - run "npm install" on cmd
 - name sample.env to .env and insert the value of variables
 - run server.js
-- run any html page you want (for now only signup page is integrated with backend)
+- run any html page you want (for now only signup page, signin page, blog page and addblog page is integrated with backend)
 
